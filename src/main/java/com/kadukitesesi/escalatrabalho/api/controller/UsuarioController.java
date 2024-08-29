@@ -26,7 +26,7 @@ public class UsuarioController {
     @PostMapping("registro")
     public ResponseEntity<String> createUser(@RequestBody RegistrationUserDto userDto) {
         try {
-            registrationService.registerUser(userDto);
+           // registrationService.registerUser(userDto);
             return new ResponseEntity<>("Usuário registrado com sucesso!", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Não foi possível criar o usuário", HttpStatus.BAD_REQUEST);
