@@ -36,7 +36,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/usuario/login").permitAll()
+                                .requestMatchers("/adm").hasAuthority("ROLE_ADMINISTRADOR")
+                                .requestMatchers("/registro").hasAuthority("ROLE_ADMINISTRADOR")
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(
