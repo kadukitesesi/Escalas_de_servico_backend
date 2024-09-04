@@ -1,9 +1,8 @@
 package com.kadukitesesi.escalatrabalho.service;
 
-import com.kadukitesesi.escalatrabalho.infraestrutura.model.Usuario;
-import com.kadukitesesi.escalatrabalho.repository.UserRepository;
+import com.kadukitesesi.escalatrabalho.api.model.user.models.UserModel;
+import com.kadukitesesi.escalatrabalho.api.model.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,9 +17,9 @@ public class EscalaService {
     private UserRepository userRepository;
 
     public void criarEscala(String nome, Date dataServico) {
-        Optional<Usuario> usuarioBuscado = userRepository.findByUsername(nome);
+        Optional<UserModel> usuarioBuscado = userRepository.findByUsername(nome);
         if (usuarioBuscado.isPresent()) {
-            Usuario usuario = usuarioBuscado.get();
+            UserModel usuario = usuarioBuscado.get();
 
             List<Date> servicos = usuario.getDataServico();
             if (servicos.isEmpty()) {

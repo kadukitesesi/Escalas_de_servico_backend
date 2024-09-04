@@ -1,4 +1,4 @@
-package com.kadukitesesi.escalatrabalho.api.controller;
+package com.kadukitesesi.escalatrabalho.api.auth;
 
 
 import com.kadukitesesi.escalatrabalho.service.EscalaService;
