@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
@@ -45,6 +46,10 @@ public class UserModel implements UserDetails {
     private String cargo;
 
     private List<Date> dataServico;
+
+    private BigDecimal salario;
+
+    private long horasTrabalhadas;
 
     
 

@@ -20,6 +20,7 @@ public class AlmocoService {
 
     private LocalTime inicioAlmoco;
     private LocalTime fimAlmoco;
+    private long tempoAlmoco;
 
     public String iniciarAlmoco() {
         inicioAlmoco = LocalTime.now();
@@ -31,11 +32,13 @@ public class AlmocoService {
             return "Você ainda não almoçou";
         }
         fimAlmoco = LocalTime.now();
-        long tempoAlmoco = Duration.between(inicioAlmoco, fimAlmoco).toMinutes();
-
         inicioAlmoco = null;
 
         return "Almoço terminado às " + fimAlmoco + ", almoço durou " + tempoAlmoco;
+    }
+
+    public long tempoAlmoco() {
+        return  tempoAlmoco = Duration.between(inicioAlmoco, fimAlmoco).toMinutes();
     }
 
 
