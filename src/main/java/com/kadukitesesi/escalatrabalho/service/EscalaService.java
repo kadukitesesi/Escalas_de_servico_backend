@@ -3,6 +3,7 @@ package com.kadukitesesi.escalatrabalho.service;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.UserModel;
 import com.kadukitesesi.escalatrabalho.api.model.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +77,15 @@ public class EscalaService {
             userRepository.save(userModel);
         }
         return horasTrabalhadasDia;
+    }
+
+
+    @Scheduled(cron = "0 0 0 1 * ?")
+    public void resetarHorasDoMes() {
+        List<UserModel> usuarios = userRepository.findAll();
+        for (UserModel usuario : usuarios) {
+            usuario.setHorasTrabalhadas(0);
+        }
+        userRepository.saveAll(usuarios);
     }
 }
