@@ -3,6 +3,7 @@ package com.kadukitesesi.escalatrabalho.service;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.UserModel;
 import com.kadukitesesi.escalatrabalho.api.model.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -64,12 +65,16 @@ public class EscalaService {
         if (entrada == null || saida == null) {
             throw new IllegalStateException("Entrada ou saída não registrada.");
         }
-        long horasTrabalhadas = Duration.between(entrada, saida).toHours();
+        long horasTrabalhadasDia = Duration.between(entrada, saida).toHours();
         Optional<UserModel> usuario = userRepository.findByUsername(username);
         if (usuario.isPresent()) {
-            usuario.get().setHorasTrabalhadas(horasTrabalhadas);
-            userRepository.save(usuario.get());
+
+            UserModel userModel = usuario.get();
+
+            long horasTrabalhadasUsuario = userModel.getHorasTrabalhadas();
+            userModel.setHorasTrabalhadas(horasTrabalhadasUsuario + horasTrabalhadasDia);
+            userRepository.save(userModel);
         }
-        return horasTrabalhadas;
+        return horasTrabalhadasDia;
     }
 }
