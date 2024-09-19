@@ -1,6 +1,7 @@
 package com.kadukitesesi.escalatrabalho.api.controller;
 
 import com.kadukitesesi.escalatrabalho.service.AlmocoService;
+import com.kadukitesesi.escalatrabalho.service.EmailService;
 import com.kadukitesesi.escalatrabalho.service.EscalaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

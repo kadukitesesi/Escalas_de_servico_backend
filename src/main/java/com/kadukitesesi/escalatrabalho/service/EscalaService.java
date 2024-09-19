@@ -1,5 +1,6 @@
 package com.kadukitesesi.escalatrabalho.service;
 
+import com.kadukitesesi.escalatrabalho.api.model.user.models.Email;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.UserModel;
 import com.kadukitesesi.escalatrabalho.api.model.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class EscalaService {
     private LocalTime saida;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private UserRepository userRepository;
 
     public void criarEscala(String nome, Date dataServico) {
@@ -37,9 +41,12 @@ public class EscalaService {
         LocalTime horarioEntrada = LocalTime.of(8, 0);
         entrada = LocalTime.now();
 
+        Email email = new Email("kadukitesesi@gmail.com","Ponto", "Você esta atrasadissimo");
+
         if (entrada.isAfter(horarioEntrada)) {
             long horasExcedentes = Duration.between(horarioEntrada, entrada).toHours();
             System.out.println("Horas atrasado: " + horasExcedentes);
+            emailService.enviarEmail(email);
         }
 
         return entrada.equals(horarioEntrada) || entrada.isBefore(horarioEntrada)

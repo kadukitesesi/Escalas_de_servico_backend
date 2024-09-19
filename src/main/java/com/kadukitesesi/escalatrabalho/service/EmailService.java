@@ -3,6 +3,7 @@ package com.kadukitesesi.escalatrabalho.service;
 
 import com.kadukitesesi.escalatrabalho.api.model.user.models.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -10,18 +11,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
+    @Value("${spring.mail.username}")
+    private String from;
+
     @Autowired
     private JavaMailSender javaMailSender;
 
     public void enviarEmail(Email email) {
         var mensagem = new SimpleMailMessage();
 
-        mensagem.setFrom("carlos@gmail.com");
+        mensagem.setFrom(from);
         mensagem.setTo(email.para());
         mensagem.setSubject(email.assunto());
         mensagem.setText(email.mensagem());
 
-        javaMailSender.send(mensagem);
+        try {
+            javaMailSender.send(mensagem);
+        } catch (Exception e) {
+            System.err.println("Email: " + from);
+            System.err.println("Erro ao enviar e-mail: " + e.getMessage());
+        }
     }
 
 }
