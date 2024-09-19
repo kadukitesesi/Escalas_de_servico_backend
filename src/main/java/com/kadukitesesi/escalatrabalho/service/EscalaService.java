@@ -4,7 +4,6 @@ import com.kadukitesesi.escalatrabalho.api.model.user.models.UserModel;
 import com.kadukitesesi.escalatrabalho.api.model.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
