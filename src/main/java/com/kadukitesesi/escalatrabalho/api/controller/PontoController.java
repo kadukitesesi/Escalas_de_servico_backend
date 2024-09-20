@@ -22,15 +22,15 @@ public class PontoController {
     private EscalaService escalaService;
 
 
-    @GetMapping("/saida")
-    public ResponseEntity<String> baterPontoSaida() {
-        String resposta = escalaService.baterPontoSaida();
+    @GetMapping("/saida/{nome}")
+    public ResponseEntity<String> baterPontoSaida(@PathVariable String nome) {
+        String resposta = escalaService.baterPontoSaida(nome);
         return ResponseEntity.ok(resposta);
     }
 
-    @GetMapping("/entrada")
-    public ResponseEntity<String> baterPontoEntrada() {
-        String resposta = escalaService.baterPontoEntrada();
+    @GetMapping("/entrada/{nome}")
+    public ResponseEntity<String> baterPontoEntrada(@PathVariable String nome) {
+        String resposta = escalaService.baterPontoEntrada(nome);
         return ResponseEntity.ok(resposta);
     }
 

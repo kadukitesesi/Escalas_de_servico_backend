@@ -18,6 +18,8 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     public void enviarEmail(Email email) {
+
+        try {
         var mensagem = new SimpleMailMessage();
 
         mensagem.setFrom(from);
@@ -25,7 +27,7 @@ public class EmailService {
         mensagem.setSubject(email.assunto());
         mensagem.setText(email.mensagem());
 
-        try {
+
             javaMailSender.send(mensagem);
         } catch (Exception e) {
             System.err.println("Email: " + from);

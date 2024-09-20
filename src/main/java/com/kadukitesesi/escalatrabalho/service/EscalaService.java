@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,35 +38,43 @@ public class EscalaService {
         }
     }
 
-    public String baterPontoEntrada() {
+    public String baterPontoEntrada(String username) {
         LocalTime horarioEntrada = LocalTime.of(8, 0);
         entrada = LocalTime.now();
-
-        Email email = new Email("kadukitesesi@gmail.com","Ponto", "Você esta atrasadissimo");
+        String mensagem;
 
         if (entrada.isAfter(horarioEntrada)) {
             long horasExcedentes = Duration.between(horarioEntrada, entrada).toHours();
-            System.out.println("Horas atrasado: " + horasExcedentes);
-            emailService.enviarEmail(email);
+            mensagem = username + " está atrasado em " + horasExcedentes + " horas.";
+        } else {
+            mensagem = username + " chegou no seu horário.";
         }
 
-        return entrada.equals(horarioEntrada) || entrada.isBefore(horarioEntrada)
-                ? "Você chegou no seu horário"
-                : "Você está chegando atrasado";
+        Email email = new Email("kadukitesesi@gmail.com", "Ponto de Entrada", mensagem);
+        emailService.enviarEmail(email);
+
+        return mensagem;
     }
 
-    public String baterPontoSaida() {
+    public String baterPontoSaida(String nome) {
         LocalTime horarioSaida = LocalTime.of(18, 0);
         saida = LocalTime.now();
+        UserModel user = userRepository.findByNome(nome);
+        String mensagem;
 
         if (saida.isAfter(horarioSaida)) {
             long horasExcedentes = Duration.between(horarioSaida, saida).toHours();
-            System.out.println("Horas excedentes: " + horasExcedentes);
+            mensagem = user.getUsername() + " tem " + horasExcedentes + " horas excedentes.";
+        } else if (saida.equals(horarioSaida)) {
+            mensagem = user.getUsername() + " está saindo em seu horário.";
+        } else {
+            mensagem = user.getUsername() + " está saindo às: " + Instant.now();
         }
 
-        return saida.equals(horarioSaida)
-                ? "Você saiu no seu horário"
-                : "Você está saindo mais cedo";
+        Email email = new Email("kadukitesesi@gmail.com", "Ponto de Saída", mensagem);
+        emailService.enviarEmail(email);
+
+        return mensagem;
     }
 
     public long calculaHorasTrabalhadas(String username) {
@@ -75,16 +84,13 @@ public class EscalaService {
         long horasTrabalhadasDia = Duration.between(entrada, saida).toHours();
         Optional<UserModel> usuario = userRepository.findByUsername(username);
         if (usuario.isPresent()) {
-
             UserModel userModel = usuario.get();
-
             long horasTrabalhadasUsuario = userModel.getHorasTrabalhadas();
             userModel.setHorasTrabalhadas(horasTrabalhadasUsuario + horasTrabalhadasDia);
             userRepository.save(userModel);
         }
         return horasTrabalhadasDia;
     }
-
 
     @Scheduled(cron = "0 0 0 1 * ?")
     public void resetarHorasDoMes() {
