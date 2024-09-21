@@ -1,16 +1,29 @@
+# Etapa de build
 FROM ubuntu:latest AS build
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
+# Instala Java 17
+RUN apt-get update && apt-get install openjdk-17-jdk -y
+
+# Instala Maven
+RUN apt-get install maven -y
+
+# Define o diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copia o código-fonte da aplicação para dentro do container
 COPY . .
 
-RUN apt-get install maven -y
+# Executa o Maven para construir o projeto e gerar o JAR
 RUN mvn clean install
 
+# Etapa final - imagem mais enxuta com JDK slim
 FROM openjdk:17-jdk-slim
 
+# Exponha a porta 8081
 EXPOSE 8081
 
-COPY --from=build /target/escalatrabalho-1.0.0.jar app app.jar
+# Copia o arquivo JAR gerado da etapa de build para a nova imagem
+COPY --from=build /app/target/escalatrabalho-1.0.0.jar /app.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando de inicialização da aplicação
+ENTRYPOINT ["java", "-jar", "/app.jar"]
