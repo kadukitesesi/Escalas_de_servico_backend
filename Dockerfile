@@ -9,7 +9,7 @@ RUN mvn clean install
 
 FROM openjdk:17-jdk-slim
 
-EXPOSE 8080
+EXPOSE 8081
 
 COPY --from=build /target/escalatrabalho-0.0.1-SNAPSHOT.jar app.jar
 
