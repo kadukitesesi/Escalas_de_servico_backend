@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.kadukitesesi</groupId>
 	<artifactId>escalatrabalho</artifactId>
-	<version>1.0.0</version>
+	<version>1</version>
 	<name>escalatrabalho</name>
 	<description>Projeto para criação de escalas de trabalho</description>
 	<url/>
