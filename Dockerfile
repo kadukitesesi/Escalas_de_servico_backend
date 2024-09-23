@@ -12,7 +12,7 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-EXPOSE 8081
+EXPOSE 8080
 
 COPY --from=build /app/target/*.jar app.jar
 
