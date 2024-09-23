@@ -59,7 +59,7 @@ public class EscalaService {
     public String baterPontoSaida(String nome) {
         LocalTime horarioSaida = LocalTime.of(18, 0);
         saida = LocalTime.now();
-        UserModel user = userRepository.findByNome(nome);
+        UserModel user = userRepository.findByUsername(nome).get();
         String mensagem;
 
         if (saida.isAfter(horarioSaida)) {
