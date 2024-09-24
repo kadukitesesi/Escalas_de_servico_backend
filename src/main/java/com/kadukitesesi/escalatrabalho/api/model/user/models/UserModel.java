@@ -59,7 +59,10 @@ public class UserModel implements UserDetails {
         this.userRole = userRole;
     }
 
-    
+    public UserModel(String email, String encryptedPassword, UserRole role, String cargo, BigDecimal salario, String username) {
+    }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.userRole == userRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));

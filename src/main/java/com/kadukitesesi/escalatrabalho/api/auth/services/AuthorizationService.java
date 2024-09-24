@@ -54,7 +54,8 @@ public class AuthorizationService implements UserDetailsService{
         if (this.userRepository.findByEmail(registerDto.email()) != null ) return ResponseEntity.badRequest().build();
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());
         
-        UserModel newUser = new UserModel(registerDto.email(), encryptedPassword, registerDto.role());
+        UserModel newUser = new UserModel(registerDto.email(), encryptedPassword, registerDto.role(),
+                registerDto.cargo(), registerDto.salario(), registerDto.userName() );
         newUser.setCreatedAt(new Date(System.currentTimeMillis()));
         this.userRepository.save(newUser);
         return ResponseEntity.ok().build();
