@@ -3,6 +3,7 @@ package com.kadukitesesi.escalatrabalho.service;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.Email;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.UserModel;
 import com.kadukitesesi.escalatrabalho.api.model.user.repositories.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -41,16 +42,19 @@ public class EscalaService {
     public String baterPontoEntrada(String username) {
         LocalTime horarioEntrada = LocalTime.of(8, 0);
         entrada = LocalTime.now();
-        String mensagem;
+        saida = LocalTime.of(18,0);
+        String mensagem = "";
 
-        if (entrada.isAfter(horarioEntrada)) {
+        UserModel emailUser = userRepository.findByUsername(username).get();
+
+        if (entrada.isAfter(horarioEntrada) && entrada.isBefore(saida)) {
             long horasExcedentes = Duration.between(horarioEntrada, entrada).toHours();
             mensagem = username + " está atrasado em " + horasExcedentes + " horas.";
-        } else {
-            mensagem = username + " chegou no seu horário.";
         }
+            mensagem = username + " chegou: " + entrada;
 
-        Email email = new Email("kadukitesesi@gmail.com", "Ponto de Entrada", mensagem);
+
+        Email email = new Email(emailUser.getEmail(), "Ponto de Entrada", mensagem);
         emailService.enviarEmail(email);
 
         return mensagem;
@@ -71,7 +75,7 @@ public class EscalaService {
             mensagem = user.getUsername() + " está saindo às: " + Instant.now();
         }
 
-        Email email = new Email("kadukitesesi@gmail.com", "Ponto de Saída", mensagem);
+        Email email = new Email( user.getEmail(),"Ponto de Saídusa", mensagem);
         emailService.enviarEmail(email);
 
         return mensagem;
