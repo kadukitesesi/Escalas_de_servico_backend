@@ -75,7 +75,7 @@ public class EscalaService {
             mensagem = user.getUsername() + " está saindo às: " + Instant.now();
         }
 
-        Email email = new Email( user.getEmail(),"Ponto de Saídusa", mensagem);
+        Email email = new Email( user.getEmail(),"Ponto de saída", mensagem);
         emailService.enviarEmail(email);
 
         return mensagem;
