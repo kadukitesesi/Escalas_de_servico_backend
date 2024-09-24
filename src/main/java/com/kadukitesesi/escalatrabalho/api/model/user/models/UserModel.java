@@ -51,13 +51,6 @@ public class UserModel implements UserDetails {
 
     private long horasTrabalhadas;
 
-    
-
-    public UserModel(String email, String password, UserRole userRole) {
-        this.email = email;
-        this.password = password;
-        this.userRole = userRole;
-    }
 
     public UserModel(String email, String encryptedPassword, UserRole role, String cargo, BigDecimal salario, String username) {
     }
