@@ -53,6 +53,13 @@ public class UserModel implements UserDetails {
 
 
     public UserModel(String email, String encryptedPassword, UserRole role, String cargo, BigDecimal salario, String username) {
+        this.email = email;
+        this.password = encryptedPassword;
+        this.userRole = role;
+        this.cargo = cargo;
+        this.salario = salario;
+        this.username = username;
+
     }
 
 
