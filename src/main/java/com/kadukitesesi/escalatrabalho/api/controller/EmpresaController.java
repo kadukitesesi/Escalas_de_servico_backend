@@ -19,8 +19,8 @@ public class EmpresaController {
     @Autowired
     private EscalaService escalaService;
 
-    @PostMapping("/escalar")
-    public ResponseEntity<Void> escalarFuncionario(@RequestParam String nome, @RequestParam Date dataServico) {
+    @PostMapping("/escalar/{nome}/{dataServico}")
+    public ResponseEntity<Void> escalarFuncionario(@PathVariable String nome, @PathVariable Date dataServico) {
       escalaService.criarEscala(nome, dataServico);
       return ResponseEntity.ok().build();
     }
