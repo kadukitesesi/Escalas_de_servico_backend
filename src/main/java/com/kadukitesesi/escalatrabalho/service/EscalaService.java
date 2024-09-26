@@ -92,12 +92,19 @@ public class EscalaService {
         }
         long horasTrabalhadasDia = Duration.between(entrada, saida).toHours();
         Optional<UserModel> usuario = userRepository.findByUsername(username);
+        
         if (usuario.isPresent()) {
             UserModel userModel = usuario.get();
             long horasTrabalhadasUsuario = userModel.getHorasTrabalhadas();
             userModel.setHorasTrabalhadas(horasTrabalhadasUsuario + horasTrabalhadasDia);
             userRepository.save(userModel);
+
+            String mensagem = userModel.getUsername() + " até o momento tem " + horasTrabalhadasUsuario + "horas de trabalho.";
+
+            Email email = new Email( userModel.getEmail(),"Horas Trabalhadas ", mensagem);
+            emailService.enviarEmail(email);
         }
+        
         return horasTrabalhadasDia;
     }
 
