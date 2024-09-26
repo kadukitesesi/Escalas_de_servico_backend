@@ -99,7 +99,7 @@ public class EscalaService {
             userModel.setHorasTrabalhadas(horasTrabalhadasUsuario + horasTrabalhadasDia);
             userRepository.save(userModel);
 
-            String mensagem = userModel.getUsername() + " até o momento tem " + horasTrabalhadasUsuario + "horas de trabalho.";
+            String mensagem = userModel.getUsername() + " até o momento tem " + horasTrabalhadasUsuario + " horas de trabalho.";
 
             Email email = new Email( userModel.getEmail(),"Horas Trabalhadas ", mensagem);
             emailService.enviarEmail(email);
