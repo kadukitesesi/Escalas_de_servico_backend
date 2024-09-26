@@ -29,15 +29,17 @@ public class EscalaService {
     private UserRepository userRepository;
 
     public void criarEscala(String nome, Date dataServico) {
-        Optional<UserModel> usuarioBuscado = userRepository.findByUsername(nome);
-        if (usuarioBuscado.isPresent()) {
-            UserModel usuario = usuarioBuscado.get();
-            List<Date> servicos = usuario.getDataServico() != null ? usuario.getDataServico() : new ArrayList<>();
+        userRepository.findByUsername(nome).ifPresent(usuario -> {
+            List<Date> servicos = usuario.getDataServico();
+            if (servicos == null) {
+                servicos = new ArrayList<>();
+            }
             servicos.add(dataServico);
             usuario.setDataServico(servicos);
             userRepository.save(usuario);
-        }
+        });
     }
+
 
     public String baterPontoEntrada(String username) {
         LocalTime horarioEntrada = LocalTime.of(8, 0);
