@@ -1,5 +1,6 @@
 package com.kadukitesesi.escalatrabalho.service;
 
+import com.kadukitesesi.escalatrabalho.api.model.user.dtos.Funcionarios;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.Email;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.UserModel;
 import com.kadukitesesi.escalatrabalho.api.model.user.repositories.UserRepository;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EscalaService {
@@ -105,5 +107,19 @@ public class EscalaService {
             usuario.setHorasTrabalhadas(0);
         }
         userRepository.saveAll(usuarios);
+    }
+
+    public List<Funcionarios> consultarFuncionarios() {
+        List<UserModel> usuarios = userRepository.findAll();
+
+        return usuarios.stream()
+                .map(
+                        usuario -> new Funcionarios(
+                                usuario.getUsername(),
+                                usuario.getSalario(),
+                                usuario.getCargo(),
+                                usuario.getCreatedAt()
+                        )
+                ).collect(Collectors.toList());
     }
 }
