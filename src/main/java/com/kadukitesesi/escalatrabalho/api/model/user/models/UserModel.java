@@ -74,7 +74,7 @@ public class UserModel implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
     @Override
     public boolean isAccountNonExpired() {
