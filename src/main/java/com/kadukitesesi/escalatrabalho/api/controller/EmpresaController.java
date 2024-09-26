@@ -30,8 +30,8 @@ public class EmpresaController {
 
     @GetMapping("/funcionarios")
     public ResponseEntity<List<Funcionarios>> funcionarios() {
-        escalaService.consultarFuncionarios();
-        return ResponseEntity.ok().build();
+        List<Funcionarios> funcionarios = escalaService.consultarFuncionarios();
+        return ResponseEntity.status(200).body(funcionarios);
     }
 
 }
