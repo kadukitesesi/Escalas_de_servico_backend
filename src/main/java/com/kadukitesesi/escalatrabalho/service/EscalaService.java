@@ -4,12 +4,9 @@ import com.kadukitesesi.escalatrabalho.api.model.user.dtos.Funcionarios;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.Email;
 import com.kadukitesesi.escalatrabalho.api.model.user.models.UserModel;
 import com.kadukitesesi.escalatrabalho.api.model.user.repositories.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -58,8 +55,12 @@ public class EscalaService {
         }
             mensagem = username + " chegou: " + entrada;
 
-
-        Email email = new Email(emailUser.getEmail(), "Ponto de Entrada", mensagem);
+        var email = Email.builder()
+                        .para(emailUser.getEmail())
+                        .assunto("Ponto de Entrada")
+                        .mensagem(mensagem)
+                        .variavel("ponto", mensagem )
+                        .build();
         emailService.enviarEmail(email);
 
         return mensagem;
@@ -77,10 +78,15 @@ public class EscalaService {
         } else if (saida.equals(horarioSaida)) {
             mensagem = user.getUsername() + " está saindo em seu horário.";
         } else {
-            mensagem = user.getUsername() + " está saindo às: " + Instant.now();
+            mensagem = String.format(user.getUsername() + " está saindo às: " + Instant.now());
         }
 
-        Email email = new Email( user.getEmail(),"Ponto de saída", mensagem);
+        var email = Email.builder()
+                .para(user.getEmail())
+                .assunto("Ponto de Saída")
+                .mensagem(mensagem)
+                .variavel("ponto", mensagem )
+                .build();
         emailService.enviarEmail(email);
 
         return mensagem;
@@ -101,7 +107,12 @@ public class EscalaService {
 
             String mensagem = userModel.getUsername() + " até o momento tem " + horasTrabalhadasUsuario + " horas de trabalho.";
 
-            Email email = new Email( userModel.getEmail(),"Horas Trabalhadas ", mensagem);
+            var email = Email.builder()
+                    .para(userModel.getEmail())
+                    .assunto("Horas Trabalhadas")
+                    .mensagem(mensagem)
+                    .variavel("ponto", mensagem )
+                    .build();
             emailService.enviarEmail(email);
         }
         
