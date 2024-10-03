@@ -60,6 +60,7 @@ public class EscalaService {
                         .assunto("Ponto de Entrada")
                         .mensagem("Template_email.html")
                         .variavel("ponto", mensagem )
+                        .variavel("nome", emailUser.getUsername())
                         .build();
         emailService.enviarEmail(email);
 
