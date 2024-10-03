@@ -58,7 +58,7 @@ public class EscalaService {
         var email = Email.builder()
                         .para(emailUser.getEmail())
                         .assunto("Ponto de Entrada")
-                        .mensagem(mensagem)
+                        .mensagem("Template_email.html")
                         .variavel("ponto", mensagem )
                         .build();
         emailService.enviarEmail(email);
