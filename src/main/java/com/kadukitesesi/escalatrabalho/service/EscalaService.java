@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +19,7 @@ public class EscalaService {
 
     private LocalTime entrada;
     private LocalTime saida;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @Autowired
     private EmailService emailService;
@@ -45,6 +44,7 @@ public class EscalaService {
         LocalTime horarioEntrada = LocalTime.of(8, 0);
         entrada = LocalTime.now();
         saida = LocalTime.of(18,0);
+        String horaFormatada = entrada.format(formatter);
         String mensagem = "";
 
         UserModel emailUser = userRepository.findByUsername(username).get();
@@ -53,7 +53,7 @@ public class EscalaService {
             long horasExcedentes = Duration.between(horarioEntrada, entrada).toHours();
             mensagem = username + " está atrasado em " + horasExcedentes + " horas.";
         }
-            mensagem = username + " chegou: " + entrada;
+            mensagem = username + " chegou: " + horaFormatada;
 
         var email = Email.builder()
                         .para(emailUser.getEmail())
@@ -70,6 +70,7 @@ public class EscalaService {
     public String baterPontoSaida(String nome) {
         LocalTime horarioSaida = LocalTime.of(18, 0);
         saida = LocalTime.now();
+        String horaFormatada = saida.format(formatter);
         UserModel user = userRepository.findByUsername(nome).get();
         String mensagem;
 
@@ -79,14 +80,15 @@ public class EscalaService {
         } else if (saida.equals(horarioSaida)) {
             mensagem = user.getUsername() + " está saindo em seu horário.";
         } else {
-            mensagem = String.format(user.getUsername() + " está saindo às: " + Instant.now());
+            mensagem = String.format(user.getUsername() + " está saindo às: " + horaFormatada);
         }
 
         var email = Email.builder()
                 .para(user.getEmail())
-                .assunto("Ponto de Saída")
-                .mensagem(mensagem)
+                .assunto("Ponto de saída")
+                .mensagem("Template_email.html")
                 .variavel("ponto", mensagem )
+                .variavel("nome", user.getUsername())
                 .build();
         emailService.enviarEmail(email);
 
@@ -110,9 +112,10 @@ public class EscalaService {
 
             var email = Email.builder()
                     .para(userModel.getEmail())
-                    .assunto("Horas Trabalhadas")
-                    .mensagem(mensagem)
+                    .assunto("Horas trabalhadas")
+                    .mensagem("Template_email.html")
                     .variavel("ponto", mensagem )
+                    .variavel("nome", userModel.getUsername())
                     .build();
             emailService.enviarEmail(email);
         }
